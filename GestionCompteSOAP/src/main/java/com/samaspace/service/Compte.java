@@ -1,4 +1,4 @@
-package com.samaspace.metier;
+package com.samaspace.service;
 
 import java.io.Serializable;
 
@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
-@XmlRootElement
+@XmlRootElement(name ="Account")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Compte implements Serializable{
 

@@ -1,4 +1,6 @@
 package com.samaspace.service;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,55 +8,61 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-import com.samaspace.metier.Compte;
 
+@WebService(name = "ServiceBanque")
+public class ServiceComptesBancaire {
 
-@WebService
-public class ServiceComptesBancaire implements ICompteBancaire {
-
-    public static List<Compte> listeAccounts(){
-    	List<Compte> list  = new ArrayList<Compte>();
-    	Compte c = new Compte("KIU87FR", 890);
-    	Compte c1 = new Compte("LOkç78H", 8780);
-    	Compte c2 = new Compte("123K", 1890);
-    	Compte c3 = new Compte("àà#hg", 2000);
-    	list.add(c1);
-    	list.add(c2);
-    	list.add(c3);
-    	list.add(c);
-    	return list;
-    	
+	public List<Compte> Comptes;
+   
+	
+	protected ServiceComptesBancaire(List<Compte> list)  {
+        super();
+        this.Comptes = list;
     }
 	
-	@Override
-	@WebMethod(operationName = "findOneAccount")
-	public int findCompte(@WebParam(name = "matricule")String num) {
-		List<Compte> cc = new ArrayList<Compte>();
-		for(Compte c : listeAccounts()) {
-            if ( c.getNumero().equals(num));
-            {
-                return  cc.indexOf(c);
-            }
-	}
-		 return -1;
-		 }
 	
+	public ServiceComptesBancaire() {
+    }
 
-	@Override
+
+	public static List<Compte> initializeList() {
+        List<Compte> list  = new ArrayList<Compte>();
+
+        list.add(new Compte("A111",10000));
+        list.add(new Compte("B222",150000));
+        list.add(new Compte("C222",1500));
+        list.add(new Compte("D222",20000));
+        return list;
+    }
+	
+	@WebMethod(operationName = "findCompte")
+    public int findCompte(@WebParam(name = "NumClient") String NumClient){
+
+        for(Compte c : initializeList()) {
+            if ( c.getNumero().equals(NumClient))
+            {
+                return  initializeList().indexOf(c);
+
+            }
+        }
+
+        // write Contact object only with num when name is not found
+        return -1;
+
+    }
+
+	
 	@WebMethod(operationName = "allAccounts")
 	public List<Compte> allComptes() {
 		
-		return listeAccounts();
+		return this.initializeList();
 	}
 
-	@Override
+	
 	@WebMethod(operationName = "setOneAccount")
-	public Compte set(@WebParam(name = "index") int index, Compte c) {
-		//this.Comptes.set(index,c);
-		Compte cc = new Compte();
+	public void setAccount(@WebParam(name = "index") int index, Compte c) {
 		
-		cc = this.listeAccounts().set(index, c);
-		return cc;
+		initializeList().set(index, c);
 	}
 
 	
